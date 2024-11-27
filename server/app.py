@@ -33,12 +33,12 @@ class AllUsers(Resource):
                 "error": "failed to add user!"
             }
             return make_response(response_body, 400)
-api.add_resource(AllUsers, '/user')
+api.add_resource(AllUsers, '/users')
 
 class AllEvents(Resource):
     def get(self):
         events = Event.query.all()
-        response_body = [event.to_dict(only=('image','title','description','location')) for event in events]
+        response_body = [event.to_dict(only=('id','image','title','description','location')) for event in events]
         return make_response(response_body, 200)
     def post (self):
         try:
@@ -52,7 +52,7 @@ class AllEvents(Resource):
                 "error": "reload page!"
             }
             return make_response(response_body, 400)
-api.add_resource(AllEvents, '/event')
+api.add_resource(AllEvents, '/events')
 
 class EventsById(Resource):
     def delete(self,id):
@@ -69,8 +69,20 @@ class EventsById(Resource):
                 'error': "Event Not Found"
             }
             return make_response(response_body, 404)
+    def get(self,id):
+        event = db.session.get(Event, id)
+
+        if event:
+            response_body = event.to_dict(only=('id','image','title','description','location'))
+            return make_response (response_body, 200)
+
+        else:
+            response_body = {
+                'error': "Event Not Found"
+            }
+            return make_response(response_body, 404)
     
-api.add_resource(EventsById, '/event/<int:id>')
+api.add_resource(EventsById, '/events/<int:id>')
 
 class AllSavedEvents(Resource):
     def get(self):
@@ -89,7 +101,7 @@ class AllSavedEvents(Resource):
                 "error": "Event cannot be added to favorites!"
             }
             return make_response(response_body, 400)
-api.add_resource(AllSavedEvents, '/savedevent')
+api.add_resource(AllSavedEvents, '/savedevents')
 
 class SavedEventsById(Resource):
     def delete(self,id):
@@ -105,7 +117,7 @@ class SavedEventsById(Resource):
                 'error': "Event Not Found"
             }
             return make_response(response_body, 404)
-api.add_resource(SavedEventsById, '/savedevent/<int:id>')
+api.add_resource(SavedEventsById, '/savedevents/<int:id>')
 
 class AllSignUps(Resource):
     def get(self):
@@ -124,7 +136,7 @@ class AllSignUps(Resource):
                 "error": "failed to sign up!"
             }
             return make_response(response_body, 400)
-api.add_resource(AllSignUps, '/signup')
+api.add_resource(AllSignUps, '/signups')
 
 class SignUpsById(Resource):
     def delete(self,id):
@@ -140,7 +152,30 @@ class SignUpsById(Resource):
                 'error': "could not delete user from sign up"
             }
             return make_response(response_body, 404)
-api.add_resource(SignUpsById, '/signup/<int:id>')
+    def patch(self, id):
+            sign_ups = db.session.get(SignUp, id)
+
+            if sign_ups:
+                try:
+                    for attr in request.json:
+                        setattr(sign_ups, attr, request.json[attr])
+                    
+                    db.session.commit()    
+                    response_body = sign_ups.to_dict(only=('attending_event'))
+                    return make_response(response_body, 200)
+                
+                except:
+                    response_body = {
+                        "error": "could not update!"
+                    }
+                    return make_response(response_body, 400)
+
+            else:
+                response_body = {
+                    'error': "Sign up not found"
+                }
+                return make_response(response_body, 404)
+api.add_resource(SignUpsById, '/signups/<int:id>')
 
 @app.route('/')
 def index():

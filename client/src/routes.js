@@ -1,8 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-
 import ErrorPage from "./components/ErrorPage";
 import EventList from "./components/EventList";
 import SignedUpList from './components/SignedUpList';
@@ -12,7 +7,8 @@ import About from "./components/About";
 import EventDetails from "./components/EventDetails";
 import App from "./components/App";
 
-const router = createBrowserRouter ([
+
+const routes = [
     {
         path: "/",
         element: <App/>,
@@ -44,9 +40,6 @@ const router = createBrowserRouter ([
             }
         ]
     }
-])
+]
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<RouterProvider router={router} />);
-
+export default routes;
