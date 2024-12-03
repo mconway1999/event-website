@@ -1,8 +1,10 @@
-function SavedEventList({savedEvents}) {
+import { useOutletContext } from "react-router-dom";
 
+function SavedEventList() {
+    const {postSavedEvents, deleteSavedEvents} = useOutletContext()
     return (
     <div>
-        <li>{savedEvents}</li>
+        <li></li>
     </div>);
   }
   

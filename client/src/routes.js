@@ -23,7 +23,7 @@ const routes = [
                 element: <SignedUpList/>
             },
             {
-                path: "/signup",
+                path: "/signup/:id",
                 element: <SignUpForm/>
             },
             {

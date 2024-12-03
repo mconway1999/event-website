@@ -112,7 +112,6 @@ function App() {
       }
   })
   }
-
   function getSignUps(){
     fetch("/signups")
     .then(response => response.json())
@@ -179,9 +178,9 @@ function App() {
 
 
   return (
-    <div>
+    <div className="bg-gray-900">
     <NavBar/>
-    <Outlet context={{events: events, postEvents: postEvents, deleteEvents: deleteEvents, users: users, postUsers: postUsers, savedEvents: savedEvents, postSavedEvents: postSavedEvents, deleteSavedEvents: deleteSavedEvents, signUps: signUps, postSignUps: postSignUps, deleteSignUps: deleteSignUps, patchSignUps: patchSignUps}}/>
+    <Outlet context={{events: events, postEvents: postEvents, deleteEvents: deleteEvents, users: users, postUsers: postUsers, postSavedEvents : postSavedEvents, savedEvents: savedEvents, deleteSavedEvents: deleteSavedEvents, signUps: signUps, postSignUps: postSignUps, deleteSignUps: deleteSignUps, patchSignUps: patchSignUps}}/>
     </div>
   )}
 
